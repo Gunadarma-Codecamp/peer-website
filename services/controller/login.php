@@ -75,7 +75,7 @@ class login extends Controller {
 		$data['username'] = _p('email');
 		$data['name'] = _p('name');
 		$data['email'] = _p('email');
-		$data['salt'] = 1234567890;
+		$data['salt'] = "";
 
 		if($_POST['password']!=''){
 			$data['password'] = sha1(_P('password').$data['salt']);;
