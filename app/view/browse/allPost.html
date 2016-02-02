@@ -16,7 +16,7 @@
                 <th style="width: 2%;">Kode Indiv</th>
                 <th>Lokasi</th>
                 <th>Pencipta</th>
-                <th class="col-md-5">Gambar</th>
+                <th class="col-md-3">Gambar</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -28,7 +28,8 @@
                 <td>{$dataIndiv.indiv.locality}</td>
                 <td>{$dataIndiv.indiv.name}</td>
                 <td>
-                    <div id="links-{$dataIndiv.indiv.indivID}">
+
+				<div id="links-{$dataIndiv.indiv.indivID}">
                         {foreach $dataIndiv.img as $img}
                         {if $img.md5sum}
                         <a href="{$basedomain}public_assets/img/500px/{$img.md5sum}.500px.jpg" title="{$dataIndiv.indiv.name}" data-gallery="#blueimp-gallery-links-{$dataIndiv.indiv.indivID}">
@@ -39,9 +40,9 @@
                         {/foreach}
                     </div>
                 </td>
-                <td class="text-center">
-                    <a href="{$basedomain}browse/editIndiv/?id={$dataIndiv.indiv.indivID}" class="btn florakb-btn">Sunting</a>
-                </td>
+				 <td class="text-center">	
+					<a href="{$basedomain}browse/editIndiv/?id={$dataIndiv.indiv.indivID}" class="btn florakb-btn">Sunting</a>	
+				</td>
             </tr>
         {/foreach} 
         </tbody>

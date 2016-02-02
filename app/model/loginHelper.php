@@ -208,7 +208,8 @@ class loginHelper extends Database {
                 'twitter' => $data[0]['person']['twitter'],
                 'website' => $data[0]['person']['website'],
                 'phone' => $data[0]['person']['phone'],
-                'password' => $password
+                'password' => $password,
+                'group'=> $data[0]['person']['id_group']
             );
         // $_SESSION['login'] = $dataSession;
 

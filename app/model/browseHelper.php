@@ -56,8 +56,8 @@ class browseHelper extends Database {
                     INNER JOIN `{$this->prefix}_locn` ON
                         {$this->prefix}_locn.id = {$this->prefix}_indiv.locnID
                     GROUP BY {$this->prefix}_det.indivID";
-        }
-        
+         //pr($sql); exit;
+		}
         if($action=='indivLocn'){
             $sql = "SELECT {$this->prefix}_indiv.id as indivID, {$this->prefix}_indiv.locnID, {$this->prefix}_indiv.plot, {$this->prefix}_indiv.tag, {$this->prefix}_indiv.personID, {$this->prefix}_locn.*, {$this->prefix}_person.*
                     FROM `{$this->prefix}_indiv` INNER JOIN `{$this->prefix}_locn` ON 
@@ -68,16 +68,24 @@ class browseHelper extends Database {
         }
         
         if($action=='indivPerson'){
-            $sql = "SELECT {$this->prefix}_indiv.id as indivID, {$this->prefix}_indiv.locnID, {$this->prefix}_indiv.plot, {$this->prefix}_indiv.tag, {$this->prefix}_indiv.personID, {$this->prefix}_locn.*, {$this->prefix}_person.*
+            $sql = "SELECT {$this->prefix}_indiv.id as indivID, {$this->prefix}_indiv.locnID, {$this->prefix}_indiv.plot, {$this->prefix}_indiv.tag, {$this->prefix}_indiv.personID, {$this->prefix}_locn.*, {$this->prefix}_person.*, {$this->prefix}_det.taxonID, {$this->prefix}_taxon.gen
                     FROM `{$this->prefix}_indiv` INNER JOIN `{$this->prefix}_locn` ON 
-                        $value = {$this->prefix}_indiv.personID AND {$this->prefix}_indiv.n_status = '0'
+                        $value = {$this->prefix}_indiv.personID AND {$this->prefix}_indiv.n_status = '0' AND {$this->prefix}_indiv.locnID = {$this->prefix}_locn.id		
                     INNER JOIN `{$this->prefix}_person` ON
                         $value = {$this->prefix}_person.id
                     INNER JOIN `{$this->prefix}_det` ON
                         {$this->prefix}_indiv.id = {$this->prefix}_det.indivID
+					INNER JOIN `{$this->prefix}_taxon` ON
+                        {$this->prefix}_det.taxonID = {$this->prefix}_taxon.id
                     GROUP BY {$this->prefix}_indiv.id";                   
         }
         
+		/*"SELECT * 
+                FROM `{$this->prefix}_indiv` INNER JOIN `{$this->prefix}_locn` ON 
+                    {$this->prefix}_indiv.id='$data' AND {$this->prefix}_locn.id = {$this->prefix}_indiv.locnID AND {$this->prefix}_indiv.n_status = '0'
+                INNER JOIN `{$this->prefix}_person` ON
+                    {$this->prefix}_person.id = {$this->prefix}_indiv.personID";
+		*/
         $res = $this->fetch($sql,1);
         $return['result'] = $res;
         return $return;
@@ -171,7 +179,12 @@ class browseHelper extends Database {
                 FROM `{$this->prefix}_indiv` INNER JOIN `{$this->prefix}_locn` ON 
                     {$this->prefix}_indiv.id='$data' AND {$this->prefix}_locn.id = {$this->prefix}_indiv.locnID AND {$this->prefix}_indiv.n_status = '0'
                 INNER JOIN `{$this->prefix}_person` ON
-                    {$this->prefix}_person.id = {$this->prefix}_indiv.personID";
+                    {$this->prefix}_person.id = {$this->prefix}_indiv.personID 
+				INNER JOIN `{$this->prefix}_det` ON
+					{$this->prefix}_indiv.id = {$this->prefix}_det.indivID
+				INNER JOIN `{$this->prefix}_taxon` ON
+					{$this->prefix}_det.taxonID = {$this->prefix}_taxon.id";
+	
         $res = $this->fetch($sql,1);
         return $res;
     }

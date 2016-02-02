@@ -1,3 +1,4 @@
+
 <?php
 
 /* 
@@ -7,6 +8,7 @@
 
 $ROUTES = array(
 				'home',
-taxon,                
+				'taxon',
+				'auth'
 );
 ?>

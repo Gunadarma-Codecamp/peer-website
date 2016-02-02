@@ -435,15 +435,15 @@ function sendGlobalMail($to,$from,$msg,$config=true){
 	require_once LIBS."PHPMailer/class.phpmailer.php";
 	
 	if ($from !='') $from = $from;
-	else $from = $CONFIG['EMAIL_FROM_DEFAULT'];
+	else $from = $CONFIG['email']['EMAIL_FROM_DEFAULT'];
 	
 	$mail = new PHPMailer(true);
 	$mail->IsSMTP(); // telling the class to use SMTP
-
+	
 	try {
 		logFile('ready to send mail');
 		$mail->Host       = $CONFIG['email']['EMAIL_SMTP_HOST']; // SMTP server
-		$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
+		$mail->SMTPDebug  = 1;                     // enables SMTP debug information (for testing)
 		$mail->SMTPAuth   = true;                  // enable SMTP authentication
 		$mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
 		$mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server

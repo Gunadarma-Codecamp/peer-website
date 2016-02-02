@@ -24,6 +24,8 @@ class Controller extends Application{
 		
 		global $CONFIG, $LOCALE, $basedomain, $rootpath, $portaldomain, $title, $DATA, $app_domain, $CODEKIR;
 		$filePath = APP_CONTROLLER.$this->page.$this->php_ext;
+
+		//print_r($rootpath);exit;
 		
 		$this->view = $CODEKIR['smarty'];
 		$this->view->assign('basedomain',$basedomain);

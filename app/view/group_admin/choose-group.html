@@ -1,0 +1,24 @@
+<!-- <div class="alert alert-info text-center">Pilih group yang akan di</div> -->
+            <div class="row">
+            <div class="col-md-6">
+            <div class="form-group">
+                <label for="using" class="col-sm-6 control-label">Pilih Group</label>
+                <div class="col-sm-6">
+                    <select class="form-control" name="group-id" required>
+                        <option>Pilih Group</option>
+                        {foreach from=$listGroup item=group}
+                            {if $group.id_group!=5}
+                            <option value="{$group.id_group}">{$group.nm_group}</option>
+                            {/if}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            
+
+
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-6 text-center">
+      <button type="submit" class="btn florakb-btn">Pilih</button>
+    </div>
+</div>

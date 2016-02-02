@@ -1,3 +1,18 @@
+<div id="fb-root"></div>
+{literal}
+<script>
+window.fbAsyncInit = function() {
+FB.init({appId: '1110751302298428', status: true, cookie: true,
+xfbml: true});
+};
+(function() {
+var e = document.createElement('script'); e.async = true;
+e.src = document.location.protocol +
+'//connect.facebook.net/en_US/all.js';
+document.getElementById('fb-root').appendChild(e);
+}());
+</script>
+{/literal}
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <div class="florakb-content">
     {$msg}
@@ -27,6 +42,41 @@
             <form id="aa" method="POST" action="{$basedomain}browse/doEditIndiv/?id={$smarty.get.id}" class="form-horizontal" role="form">
                 {include file="file:$rootpath/app/view/editIndiv/formIndiv.html"}
             </form>
+			
+			{foreach $indiv as $dataIndiv}
+				{foreach $img as $dataImg}
+					{if $dataImg.md5sum}
+						<center>
+							<b>Bagikan :</b> 
+							<img id = "share_button1" src="{$basedomain}assets/img/facebook-share-button.png" style="height:40px; width:40px; cursor:pointer;cursor:hand">
+							<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Species%20{$dataIndiv.gen}%20in%20{$dataIndiv.locality}%20{$basedomain}public_assets/img/500px/{$dataImg.md5sum}.500px.jpg" onclick='window.open(this.href,&quot;popupwindow&quot;,&quot;status=0,height=500,width=700,resizable=0,top=50,left=100&quot;);return false;' target='_blank' title='Share on Twitter'><img style="height:40px; width:40px" src="{$basedomain}assets/img/twitter-share-button.png"></a>
+						</center>
+					{/if}
+					{foreachelse}<i>Tidak ada gambar</i>
+				{/foreach}
+			{/foreach} 
+
+				<script>
+				$(document).ready(function(){
+					$('#share_button1').click(function(e){
+						e.preventDefault();
+						FB.ui({
+							method: 'feed',
+							name: 'Species {$dataIndiv.gen}',
+							link: 'http://flora-indonesia.id/',
+							picture: '{$basedomain}public_assets/img/1000px/{$dataImg.md5sum}.1000px.jpg',
+							caption: 'Species {$dataIndiv.gen}',
+							description: 'Location in {$dataIndiv.locality}',
+							message: ''
+						});
+					});
+				});
+		
+		</script>
+
+
+	
+			
         </div>
       </div><!-- END TAB OVERVIEW-->
       
@@ -335,5 +385,6 @@
         else{
             $('#editIndiv-tabs a[href="#overview"]').tab('show');
         }
+		
     </script>
 </literal>

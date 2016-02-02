@@ -151,10 +151,13 @@ class browse extends Controller {
     function allPost(){
         $id = $_GET['id'];
         $action = 'indivPerson';
+        //$action = 'indivTaxon';
         
         $title='';
         //get data indiv
         $getIndiv = $this->browseHelper->dataIndiv($action,'personID',$id);
+		
+		// exit;
         
         $listAll = array();
         for($i=0;$i<count($getIndiv['result']);$i++){

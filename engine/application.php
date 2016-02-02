@@ -106,6 +106,7 @@ class Application {
 	{
 		
 		global $CONFIG, $basedomain, $rootpath, $portaldomain, $app_domain;
+ 
 		
 		if ($fileName == "") return false;
 		if (array_key_exists('admin', $CONFIG)){

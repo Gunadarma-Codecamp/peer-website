@@ -407,6 +407,16 @@ class insertonebyone extends Database {
 		logFile('====COMMIT TRANSACTION====');
 		return true;
 	}
+	
+	function get_email()
+	{
+		//query memanggil data
+		$query = "SELECT email from {$this->prefix}_person where id_group in ('2','3','4','5')";
+		//pr($query);
+		//memanggil semua data. Jika hanya memanggil 1 data ->fetch($query,0,0)
+		$result = $this->fetch($query,1,0);
+		return $result;
+	}
 }
 
 ?>

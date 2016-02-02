@@ -12,6 +12,11 @@
         <li class="{if $page.page=='onebyone'}active{/if}">
             <a href="{$basedomain}onebyone/indivContent">One by one</a>
         </li>
+        {if $user['login']['group']==5}
+        <li class="{if $page.page=='group_admin'}active{/if}">
+            <a href="{$basedomain}group_admin/chooseGroup">Pengaturan Group</a>
+        </li>
+        {/if}
         <li class="{if $page.page=='browse'}active{/if}">
             <a href="javascript:;" data-toggle="collapse" data-target="#demo" class="collapsed">Browse <b class="caret"></b></a>
             <ul id="demo" class="collapse" style="height: 0px;">

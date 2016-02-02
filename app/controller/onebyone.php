@@ -33,6 +33,7 @@ class onebyone extends Controller {
      * */
 	public function loadmodule()
 	{
+        $this->groupHelper = $this->loadModel('groupHelper');
         $this->insertonebyone = $this->loadModel('insertonebyone');
         
         //only used for check name, twitter, and email
@@ -65,12 +66,33 @@ class onebyone extends Controller {
         //$sess_user = $session->get_session();
         //$sess_data = $sess_user['ses_user'];
         $sess_data = $session->get_session();
+        //pr($sess_data);exit;
         
         if(isset($sess_data['onebyone'])){
             $session->delete_session('onebyone');
             $session->delete_session('image_sess');
         }
+
         
+
+        $user_id_group = $sess_data['login']['group'];
+        $this->view->assign('user_id_group', $user_id_group);
+
+        $rules = $this->groupHelper->getRules($user_id_group);
+        // pr($rules[0]['rules']);exit;
+        $arr_rules = explode(",", $rules[0]['rules']);
+        for($i=1;$i<=20;$i++){
+            if(in_array($i,$arr_rules)){
+                $input[$i]="inherit";
+            } else {
+                $input[$i]="none";
+            }
+        }
+
+        $this->view->assign('input', $input);
+
+        $this->view->assign('rules', $rules);
+
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
         
@@ -85,6 +107,26 @@ class onebyone extends Controller {
      * @todo show view for determinant, taxon, and person form
      * */
     public function detContent(){
+        $session = new Session;
+        $sess_data = $session->get_session();        
+
+        $user_id_group = $sess_data['login']['group'];
+        $this->view->assign('user_id_group', $user_id_group);
+
+        $rules = $this->groupHelper->getRules($user_id_group);
+        // pr($rules[0]['rules']);exit;
+        $arr_rules = explode(",", $rules[0]['rules']);
+        for($i=1;$i<=20;$i++){
+            if(in_array($i,$arr_rules)){
+                $input[$i]="inherit";
+            } else {
+                $input[$i]="none";
+            }
+        }
+
+        $this->view->assign('input', $input);
+
+        $this->view->assign('rules', $rules);
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
         
@@ -111,6 +153,26 @@ class onebyone extends Controller {
      * @todo show view for determinant, taxon, and person form
      * */
     public function obsContent(){
+        $session = new Session;
+        $sess_data = $session->get_session();        
+
+        $user_id_group = $sess_data['login']['group'];
+        $this->view->assign('user_id_group', $user_id_group);
+
+        $rules = $this->groupHelper->getRules($user_id_group);
+        // pr($rules[0]['rules']);exit;
+        $arr_rules = explode(",", $rules[0]['rules']);
+        for($i=1;$i<=20;$i++){
+            if(in_array($i,$arr_rules)){
+                $input[$i]="inherit";
+            } else {
+                $input[$i]="none";
+            }
+        }
+
+        $this->view->assign('input', $input);
+
+        $this->view->assign('rules', $rules);
         $msg = $this->msg->display('all', false);
         $this->view->assign('msg', $msg);
         
@@ -144,8 +206,25 @@ class onebyone extends Controller {
         $image_sess = $session->get_session();
         if(isset($image_sess['image_sess'])){
             $this->view->assign('image_sess', $image_sess['image_sess']);
+        }      
+
+        $user_id_group = $sess_data['login']['group'];
+        $this->view->assign('user_id_group', $user_id_group);
+
+        $rules = $this->groupHelper->getRules($user_id_group);
+        // pr($rules[0]['rules']);exit;
+        $arr_rules = explode(",", $rules[0]['rules']);
+        for($i=1;$i<=20;$i++){
+            if(in_array($i,$arr_rules)){
+                $input[$i]="inherit";
+            } else {
+                $input[$i]="none";
+            }
         }
-        
+
+        $this->view->assign('input', $input);
+
+        $this->view->assign('rules', $rules);
         //get plantpart enum
         $plantpart_enum = $this->insertonebyone->get_enum('img','plantpart');
         $this->view->assign('plantpart_enum', $plantpart_enum);
@@ -274,7 +353,7 @@ class onebyone extends Controller {
      * */
     public function insertIndiv(){
 
-        global $basedomain;
+        global $basedomain, $CONFIG;
         $data = $_POST;
         
         //get data user from session
@@ -285,14 +364,23 @@ class onebyone extends Controller {
         
         $personID = $userData['login']['id'];
         $data['personID'] = $personID;
-        
+        //pr($personID);exit;
         $insertData = $this->insertonebyone->insertTransaction('indiv',$data);
         
         if($insertData){
             if($insertData['status']){
                 $sess_onebyone = array('indivID' => $insertData['lastid']);
                 $session->set_session($sess_onebyone,'onebyone');
-        
+		//Email notif		
+				$html ="Data telah diperbaharui";
+				$data_email=$this->insertonebyone->get_email();
+				pr($html);
+				
+				// $send = sendGlobalMail(trim($data_email),$CONFIG['email']['EMAIL_FROM_DEFAULT'],$html);	
+				$send = sendGlobalMail('komanganom@gmail.com',$CONFIG['email']['EMAIL_FROM_DEFAULT'],$html);	
+				
+				vd($send);exit;
+				exit;
                 $this->msg->add('s', 'Sukses Memperbarui Individu');
                 // header('Location: ../onebyone/detContent');
                 redirect($basedomain.'onebyone/detContent');
@@ -433,7 +521,7 @@ class onebyone extends Controller {
         $path = '';
         
         $uploaded_file = uploadFile($name, $path, 'image');
-        
+        //pr($uploaded_file);exit;
         //if uploaded
         if($uploaded_file['status'] != '0'){
             logFile('Upload Success');
