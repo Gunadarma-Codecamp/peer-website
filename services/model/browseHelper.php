@@ -95,10 +95,16 @@ class browseHelper extends Database {
      * @todo retrieve all images from taxon data
      * @param $data = id taxon
      */
-    function getImgTaxon($data, $start=0, $limit=5){
-        $sql = "SELECT * 
-                FROM `{$this->prefix}_det` INNER JOIN `{$this->prefix}_img` ON 
-                    {$this->prefix}_det.taxonID='$data' AND {$this->prefix}_det.indivID={$this->prefix}_img.indivID GROUP BY {$this->prefix}_img.md5sum LIMIT {$start},{$limit}";
+    function getImgTaxon($data, $start=0, $limit=10){
+        $sql = "SELECT c.name as nama, b.locality as lokasi, i.id,i.indivID, i.md5sum as md5sum, k.taxonID,l.gen as gen
+                FROM `{$this->prefix}_img` AS i
+                INNER JOIN `{$this->prefix}_det` as k on k.indivID = i.indivID
+                INNER JOIN `{$this->prefix}_taxon` as l on l.id = k.taxonID
+                INNER JOIN `{$this->prefix}_indiv` as a on a.id = k.indivID
+                INNER JOIN `{$this->prefix}_locn` as b on b.id = a.locnID
+                INNER JOIN `{$this->prefix}_person` as c on c.id = i.personID
+                where i.indivID = {$data} LIMIT {$start},{$limit}";
+                // pr($sql);
         $res = $this->fetch($sql,1);
         return $res;
     }

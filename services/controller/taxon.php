@@ -37,6 +37,11 @@ class taxon extends Controller {
 
 	}
     
+    public function insert(){
+        $output = array('status' => TRUE);
+        echo json_encode($output);
+    }
+    
     function handleRequest()
     {
 
@@ -75,7 +80,7 @@ class taxon extends Controller {
 		$SSConfig['view'][3] = "gen";
 		$SSConfig['view'][4] = "sp";
 		$SSConfig['view'][5] = "image|img|sp|id";
-		$SSConfig['view'][6] = "detail|{$portaldomain}browse/indiv/|id=id&action=indivTaxon";
+		$SSConfig['view'][6] = array("detail"=>"detail|{$portaldomain}browse/indiv/|id=id&action=indivTaxon");
 		
 		return $SSConfig;
     }
@@ -100,7 +105,7 @@ class taxon extends Controller {
 		$SSConfig['view'][4] = "elev";
 		$SSConfig['view'][5] = "locality";
 		$SSConfig['view'][6] = "county";
-		$SSConfig['view'][7] = "detail|{$portaldomain}browse/indiv/|id=id&action=indivLocn";
+		$SSConfig['view'][7] = array("detail"=>"detail|{$portaldomain}browse/indiv/|id=id&action=indivLocn");
 		
 		return $SSConfig;
     }
@@ -125,7 +130,7 @@ class taxon extends Controller {
 		$SSConfig['view'][3] = "website";
 		$SSConfig['view'][4] = "institutions";
 		$SSConfig['view'][5] = "project";
-		$SSConfig['view'][6] = "detail|{$portaldomain}browse/indiv/|id=id&action=indivPerson";
+		$SSConfig['view'][6] = array("detail"=>"detail|{$portaldomain}browse/indiv/|id=id&action=indivPerson");
 		
 		return $SSConfig;
     }
@@ -149,7 +154,8 @@ class taxon extends Controller {
 		$SSConfig['view'][2] = "locality"; 
 		$SSConfig['view'][3] = "pendata";
 		$SSConfig['view'][4] = "image|img|sp|id";
-		$SSConfig['view'][5] = "detail|{$portaldomain}browse/indivDetail/|id=indivCode";
+		// $SSConfig['view'][5] = array("detail"=>"detail|{$portaldomain}browse/indivDetail/|id=indivCode", "picture book" =>"detail|{$portaldomain}browse/indivDetail/|id=indivCode");
+		$SSConfig['view'][5] = array("detail"=>"detail|{$portaldomain}browse/indivDetail/|id=indivCode", "picture book" =>"detail|{$portaldomain}picture_book/list_picture/|id=indivCode");
 		
 		return $SSConfig;
     }
@@ -196,7 +202,9 @@ class taxon extends Controller {
 	function getImgTaxon()
 	{
 		$id = $_GET['id'];
-		$img =  $this->browseHelper->getImgTaxon($id);
+		$dataID = parseURI($_GET);
+		
+		$img =  $this->browseHelper->getImgTaxon($dataID[3]);
 		if ($img){
 			print json_encode($img);
 		}
